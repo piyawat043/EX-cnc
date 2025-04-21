@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Index of HTML Files</title>
+  <!-- อ้างอิง CSS กลาง -->
+  <link rel="stylesheet" href="css/style-guide.css">
+  <style>
+    .container {
+      padding-top: 2rem;
+    }
+    ul#file-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    ul#file-list li {
+      margin: 0.5rem 0;
+    }
+    ul#file-list a {
+      text-decoration: none;
+      color: #0057b7;
+    }
+    ul#file-list a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>รายชื่อไฟล์ .html ใน EX‑cnc</h1>
+    <ul id="file-list">
+      <li>Loading…</li>
+    </ul>
+  </div>
+
+  <script>
+    // ตั้งค่าตาม GitHub ของคุณ
+    const repoOwner = 'piyawat043';
+    const repoName  = 'EX-cnc';
+    const apiUrl    = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/`;
+
+    fetch(apiUrl)
+      .then(res => res.json())
+      .then(files => {
+        const list = document.getElementById('file-list');
+        list.innerHTML = '';
+        files
+          .filter(f => f.name.endsWith('.html'))
+          .forEach(f => {
+            const li = document.createElement('li');
+            const a  = document.createElement('a');
+            a.href       = f.html_url;      // ลิงก์ไปดูบน GitHub
+            a.target     = '_blank';
+            a.textContent= f.name;
+            li.appendChild(a);
+            list.appendChild(li);
+          });
+      })
+      .catch(err => {
+        const list = document.getElementById('file-list');
+        list.innerHTML = '<li>ไม่สามารถโหลดรายการไฟล์ได้</li>';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>

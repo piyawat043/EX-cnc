@@ -54,7 +54,7 @@
       </button>
     </div>
 
-    <div id="viewer">
+  <div id="viewer">
       <iframe id="contentFrame" src="" allowfullscreen></iframe>
     </div>
   </div>
@@ -63,11 +63,16 @@
     document.querySelectorAll('.btn').forEach(btn => {
       btn.addEventListener('click', e => {
         const file = btn.getAttribute('data-file');
+        // ถ้าเป็นลิงก์ http/https ให้เปิดในแท็บใหม่
+        if (/^https?:\/\//i.test(file)) {
+          window.open(file, '_blank');
+          return;
+        }
+        // มิฉะนั้น โหลดไฟล์ท้องถิ่นลงใน iframe
         const viewer = document.getElementById('viewer');
         const iframe = document.getElementById('contentFrame');
         iframe.src = file;
         viewer.style.display = 'block';
-        // เลื่อนลงไปที่ iframe (ถ้าจำเป็น)
         viewer.scrollIntoView({ behavior: 'smooth' });
       });
     });
